@@ -1,0 +1,29 @@
+---
+- name: systemd
+  hosts: all
+  tasks:
+    - name: start systmed service
+      systemd:
+        name: httpd
+        state: started
+        daemon_reload: yes
+
+    - name: stop systemd service
+      systemd:
+        name: httpd
+        state: stopped
+
+    - name: restart systemd service
+      systemd:
+        name: httpd
+        state: restarted
+
+    - name: enable systemd service
+      systemd:
+        name: httpd
+        enabled: yes
+
+    - name: disable systemd service
+      systemd:
+        name: httpd
+        enabled: no
