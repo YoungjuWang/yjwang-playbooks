@@ -14,9 +14,17 @@
                     image: "{{ image_id }}"
                     timeout: 600
                     flavor: 2
-                    nics:
-                        - net-id: "{{ net_id }}"
+                    network: "{{ project_name }}-demo-private"
                     auto_ip: no
+                    userdata: |
+                        #cloud-config
+                        user: cloud-user
+                        chpasswd:
+                          list: |
+                            root:root123
+                            cloud-user:root123
+                          expire: False
+                        ssh_pwauth: True
             loop: "{{ server_counts }}"
 
           - name: get openstack instances
