@@ -1,0 +1,47 @@
+---
+- name: Initialize New Project
+  hosts: localhost
+  tasks:
+        - name: Create Project
+          os_project:
+                  auth:
+                      auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                      username: "{{ lookup('env','OS_USERNAME') }}"
+                      password: "{{ lookup('env','OS_PASSWORD') }}"
+                  name: "{{ project_name }}"
+                  description: "{{ description }}"
+                  enabled: yes
+                  domain_id: default
+                  state: present
+
+        - name: Create User
+          os_user:
+                  auth:
+                      auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                      username: "{{ lookup('env','OS_USERNAME') }}"
+                      password: "{{ lookup('env','OS_PASSWORD') }}"
+                  name: "{{ project_name }}"
+                  password: "{{ project_name }}"
+                  description: "{{ description }}"
+                  domain: default
+                  default_project: "{{ project_name }}" 
+                  enabled: yes
+                  state: present
+
+        - name: Grant roles to user
+          os_user_role:
+                  auth:
+                      auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                      username: "{{ lookup('env','OS_USERNAME') }}"
+                      password: "{{ lookup('env','OS_PASSWORD') }}"
+                  project: "{{ project_name }}"
+                  user: "{{ item.user }}"
+                  role: "{{ item.role }}"
+          loop:
+                  - { user: "admin", role: "admin" }
+                  - { user: "{{ project_name }}", role: "member" } 
+                  - { user: "{{ project_name }}", role: "load-balancer_admin" } 
+                  - { user: "{{ project_name }}", role: "key-manager:service-admin" } 
+                  - { user: "{{ project_name }}", role: "_member_" } 
+                  - { user: "{{ project_name }}", role: "creator" } 
+                  - { user: "{{ project_name }}", role: "user" } 
