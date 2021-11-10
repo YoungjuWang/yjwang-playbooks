@@ -1,0 +1,44 @@
+---
+- name : Delete Initial Network
+  hosts : localhost
+  tasks :
+          - name: Delete Sample Openstack Network Router
+            os_router:
+                    state: absent
+                    auth:
+                        auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                        username: "{{ lookup('env','OS_USERNAME') }}"
+                        password: "{{ lookup('env','OS_PASSWORD') }}"
+                        project_name: "{{ project_name }}"
+                    name: "{{ project_name }}-demo-router"
+                    project: "{{ project_name }}"
+                    network: public1
+                    external_fixed_ips:
+                        - subnet: public1-subnet
+                    interfaces:
+                        - "{{ project_name }}-demo-private-subnet"
+
+          - name: Delete Sample Openstack Network Subnet
+            os_subnet:
+                    state: absent
+                    auth:
+                        auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                        username: "{{ lookup('env','OS_USERNAME') }}"
+                        password: "{{ lookup('env','OS_PASSWORD') }}"
+                        project_name: "{{ project_name }}"
+                    name: "{{ project_name }}-demo-private-subnet"
+                    network_name: "{{ project_name }}-demo-private"
+                    project: "{{ project_name }}"
+                    cidr: 10.0.100.0/24
+
+          - name: Delete Sample Openstack Private Network
+            os_network:
+                    state: absent
+                    auth:
+                        auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                        username: "{{ lookup('env','OS_USERNAME') }}"
+                        password: "{{ lookup('env','OS_PASSWORD') }}"
+                        project_name: "{{ project_name }}"
+                    name: "{{ project_name }}-demo-private"
+                    project: "{{ project_name }}"
+                    external: no
