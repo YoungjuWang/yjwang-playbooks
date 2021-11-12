@@ -1,0 +1,23 @@
+---
+- name: Delete project and user
+  hosts: localhost
+  tasks:
+        - name: Delete Project
+          os_project:
+                  auth:
+                      auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                      username: "{{ lookup('env','OS_USERNAME') }}"
+                      password: "{{ lookup('env','OS_PASSWORD') }}"
+                  name: "{{ project_name }}"
+                  domain_id: default
+                  state: absent
+
+        - name: Delete User
+          os_user:
+                  auth:
+                      auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+                      username: "{{ lookup('env','OS_USERNAME') }}"
+                      password: "{{ lookup('env','OS_PASSWORD') }}"
+                  name: "{{ project_name }}"
+                  domain: default
+                  state: absent

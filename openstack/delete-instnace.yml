@@ -10,5 +10,5 @@
           username: "{{ lookup('env','OS_USERNAME') }}"
           password: "{{ lookup('env','OS_PASSWORD') }}"
           project_name: "{{ project_name }}"
-      name: "{{ project_name }}-df-server-{{ item }}"
+      name: "{{ project_name }}-sample-server-{{ item }}"
     loop: "{{ server_counts }}"

@@ -10,13 +10,13 @@
                         username: "{{ lookup('env','OS_USERNAME') }}"
                         password: "{{ lookup('env','OS_PASSWORD') }}"
                         project_name: "{{ project_name }}"
-                    name: "{{ project_name }}-demo-router"
+                    name: "{{ project_name }}-sample-router"
                     project: "{{ project_name }}"
                     network: public1
                     external_fixed_ips:
                         - subnet: public1-subnet
                     interfaces:
-                        - "{{ project_name }}-demo-private-subnet"
+                        - "{{ project_name }}-sample-private-subnet"
 
           - name: Delete Sample Openstack Network Subnet
             os_subnet:
@@ -26,8 +26,8 @@
                         username: "{{ lookup('env','OS_USERNAME') }}"
                         password: "{{ lookup('env','OS_PASSWORD') }}"
                         project_name: "{{ project_name }}"
-                    name: "{{ project_name }}-demo-private-subnet"
-                    network_name: "{{ project_name }}-demo-private"
+                    name: "{{ project_name }}-sample-private-subnet"
+                    network_name: "{{ project_name }}-sample-private"
                     project: "{{ project_name }}"
                     cidr: 10.0.100.0/24
 
@@ -39,6 +39,7 @@
                         username: "{{ lookup('env','OS_USERNAME') }}"
                         password: "{{ lookup('env','OS_PASSWORD') }}"
                         project_name: "{{ project_name }}"
-                    name: "{{ project_name }}-demo-private"
+                    name: "{{ project_name }}-sample-private"
                     project: "{{ project_name }}"
                     external: no
+

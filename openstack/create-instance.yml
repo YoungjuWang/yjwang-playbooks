@@ -10,11 +10,13 @@
                         username: "{{ lookup('env','OS_USERNAME') }}"
                         password: "{{ lookup('env','OS_PASSWORD') }}"
                         project_name: "{{ project_name }}"
-                    name: "{{ project_name }}-df-server-{{ item }}"
+                    name: "{{ project_name }}-sample-server-{{ item }}"
                     image: "{{ image_id }}"
-                    timeout: 600
-                    flavor: 2
-                    network: "{{ project_name }}-demo-private"
+                    timeout: 1800
+                    flavor: "{{ flavor_id }}"
+                    boot_from_volume: "{{ boot_from_volume | default(omit) }}"
+                    volume_size: "{{ volume_size | default(omit) }}"
+                    network: "{{ project_name }}-sample-private"
                     auto_ip: no
                     userdata: |
                         #cloud-config
@@ -29,7 +31,7 @@
 
           - name: get openstack instances
             os_server_info:
-                    server: "{{ project_name }}-df-server*"
+                    server: "{{ project_name }}-sample-server*"
             
             register: info_result
           - debug:
