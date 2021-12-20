@@ -1,0 +1,9 @@
+---
+- name: gen etc hosts
+  hosts: all
+  tasks:
+          - name: lineinfile
+            lineinfile:
+                    path: /etc/hosts
+                    line: "{{ hostvars[item]['ansible_host'] }} {{ hostvars[item]['inventory_hostname'] }}"
+            loop: "{{ ansible_play_hosts }}"
