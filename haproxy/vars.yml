@@ -1,0 +1,4 @@
+frontend_name: testfront
+backend_name: testback
+backend_port: 8080
+balance_mode: roundrobin #or leastconn 

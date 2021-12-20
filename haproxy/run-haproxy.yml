@@ -1,0 +1,27 @@
+---
+- name: 
+  hosts: all
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: create config directory
+      file:
+        path: /etc/haproxy
+        state: directory
+
+    - name: generate haproxy.cfg
+      template:
+        src: haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+
+    - name: run haproxy container
+      docker_container:
+        name: haproxy
+        volumes: 
+          - /etc/haproxy:/usr/local/etc/haproxy
+        image: haproxytech/haproxy-alpine:2.4
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "80:80"
+          - "8404:8404"
