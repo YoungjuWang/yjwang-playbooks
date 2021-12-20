@@ -1,0 +1,41 @@
+---
+- name: Install docker
+  hosts: all
+  tasks:
+    - name: docker installation
+      block:
+        - name: uninstall old version packages
+          apt:
+            name: "{{ item }}"
+            state: absent
+          loop:
+            - docker 
+            - docker-engine
+            - docker.io
+            - containerd
+            - runc
+
+        - name: configure docker repository key
+          apt_key:
+            url: "https://download.docker.com/linux/ubuntu/gpg"
+            state: present
+
+        - name: setup docker repository
+          apt_repository:
+            repo: "deb https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable"
+            state: present 
+            filename: docker
+            update_cache: no
+
+        - name: install docker
+          apt:
+            name: "{{ item }}"
+            state: present
+            update_cache: yes
+          register: result
+          until: result is succeeded
+          loop:
+            - docker-ce
+            - docker-ce-cli
+            - containerd.io
+
