@@ -1,0 +1,24 @@
+---
+- name: run echo-server
+  hosts: all
+  tasks:
+    - name: install pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: yes
+      register: result
+      until: result is succeeded
+
+    - name: install docker python module
+      pip:
+        name: docker
+
+    - name: run echo-server
+      docker_container:
+        name: echo-sample-web
+        image: jmalloc/echo-server:latest
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "8080:8080"
