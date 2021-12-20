@@ -1,0 +1,20 @@
+---
+- name: setup keepalived
+  hosts: all
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: run container
+      docker_container:
+        name: keepalived
+        image: osixia/keepalived:2.0.20
+        network_mode: 'host'
+        capabilities:
+          - NET_ADMIN
+          - NET_BROADCAST
+          - NET_RAW
+        env:
+          KEEPALIVED_UNICAST_PEERS: "#PYTHON2BASH:{{ groups['all'] }}"
+          KEEPALIVED_VIRTUAL_IPS: "{{ vip }}"
+          KEEPALIVED_PRIORITY: "200"
+          KEEPALIVED_INTERFACE: "{{ vip_interface }}"
